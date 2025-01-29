@@ -34,7 +34,7 @@ Download the app: [Google Drive Link](https://drive.google.com/file/d/1U8DK3MQZE
 ✅ User authentication (JWT-based) with **ZeroBounce API for email validation**\
 ✅ Forgot password implementation with **OTP verification**\
 ✅ Friend requests: **Send, Accept, Delete, Unfollow, and Remove from Friend List**\
-✅ **Cloudinary API for profile updates**\✅ Notifications for new messages\
+✅ **Cloudinary API for profile updates**\
 ✅ Secure data storage with MongoDB\
 ✅ Global state management using **Zustand & Context API**\
 ✅ API endpoints to **delete the current account permanently**\
