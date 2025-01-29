@@ -322,7 +322,7 @@ io.on('connection', socket => {
       });
 })
 
-http.listen(4000,() =>{
+http.listen(process.env.SOCKET_PORT,() =>{
     console.log(`Socket.io is running on 4000`)
 })
 
