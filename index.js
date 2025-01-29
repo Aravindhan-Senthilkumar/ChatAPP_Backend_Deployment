@@ -200,20 +200,33 @@ app.post('/sendrequest',async (req,res) => {
 })
 
 //endpoint to getrequest from senderId
-app.get('/getrequests/:userId',async (req,res) =>{
-    try{
+app.get('/getrequests/:userId', async (req, res) => {
+    try {
         const userId = req.params.userId;
-        const user = await User.findById(userId).populate("requests.from", "fullName email profilePhoto")
 
-        if(!user){
-            return res.status(404).json({ message:"Error finding user" })
+        // Populate requests and friends list
+        const user = await User.findById(userId)
+            .populate("requests.from", "fullName email profilePhoto")
+            .populate("friends", "_id"); // Populate only IDs of friends
+
+        if (!user) {
+            return res.status(404).json({ message: "Error finding user" });
         }
 
-        res.status(200).json(user.requests)
-    }catch(error){
-        return res.status(500).json({ message:"Error occurred in internal server" })
+        // Convert friends array to a Set for faster lookup
+        const friendIds = new Set(user.friends.map(friend => friend._id.toString()));
+
+        // Filter out requests where request.from._id exists in friends
+        const filteredRequests = user.requests.filter(request => 
+            !friendIds.has(request.from._id.toString()) // Remove if in friends
+        );
+
+        res.status(200).json(filteredRequests);
+    } catch (error) {
+        console.error("Error fetching requests:", error);
+        return res.status(500).json({ message: "Error occurred in internal server" });
     }
-})
+});
 
 //endpoint to accept request
 app.post('/acceptrequest',async (req,res) => {
